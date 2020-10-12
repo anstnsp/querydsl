@@ -18,11 +18,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.anstn.jpa.domain.delivery.Delivery;
+import com.anstn.jpa.domain.delivery.DeliveryStatus;
 import com.anstn.jpa.domain.member.Member;
+import com.anstn.jpa.domain.orderitem.OrderItem;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "ORDERS")
 public class Order {
@@ -36,7 +41,7 @@ public class Order {
   private Member member; 
   
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) 
-  private List<OrderItem> orderItem = new ArrayList<OrderItem>(); 
+  private List<OrderItem> orderItems = new ArrayList<OrderItem>(); 
   
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) 
   @JoinColumn(name = "DELIVERY_ID")
@@ -48,7 +53,7 @@ public class Order {
   private OrderStatus status; //주문상태 
 
   //연관관계 메소드 // 
-  public void setMember(Member membeer) {
+  public void setMember(Member member) {
     this.member = member; 
     member.getOrders().add(this); 
   }
@@ -62,4 +67,38 @@ public class Order {
     this.delivery = delivery; 
     delivery.setOrder(this); 
   }
+
+  //주문생성 메소드 
+  public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+    Order order = new Order(); 
+    order.setMember(member);
+    order.setDelivery(delivery);
+    for (OrderItem orderItem : orderItems) {
+      order.addOrderItem(orderItem);
+    }
+    order.setStatus(OrderStatus.ORDER);
+    order.setOrderDate(LocalDateTime.now());
+    return order; 
+  }
+
+  //==비지니스 로직==//
+  //주문취소 
+  public void cancel() {
+    if (delivery.getStatus() == DeliveryStatus.COMP) throw new RuntimeException("이미 배송완료");
+    this.setStatus(OrderStatus.CANCEL);
+    for (OrderItem orderItem : orderItems) {
+      orderItem.cancel(); 
+    }
+  }
+
+  //==조회로직==//
+  //전체 주문 가격 조회 
+  public int getTotalPrice() {
+    int totalPrice = 0; 
+    for (OrderItem orderItem : orderItems) {
+      totalPrice += orderItem.getTotalPrice(); 
+    }
+    return totalPrice;
+  }
+  
 }

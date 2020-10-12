@@ -10,13 +10,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.anstn.jpa.domain.embeded.Address;
 import com.anstn.jpa.domain.order.Order;
 
-import org.apache.tomcat.jni.Address;
+
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 public class Member {
 
@@ -24,6 +27,7 @@ public class Member {
   @Column(name = "MEMBER_ID")
   private Long id; 
 
+  @Column(name = "NAME", unique = true)
   private String name; 
 
   @Embedded

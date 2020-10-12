@@ -1,16 +1,29 @@
 package com.anstn.jpa.domain.delivery;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.anstn.jpa.domain.embeded.Address;
+import com.anstn.jpa.domain.order.Order;
+
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
 public class Delivery {
+
+  public Delivery(Address address) {
+    this.address = address; 
+  }
 
   @Id @GeneratedValue
   @Column(name ="DELEVERY_ID") 
