@@ -47,6 +47,7 @@ test {
 def projectDir = "$projectDir"
 def dist = "dist"
 def querydslDir = "$buildDir/generated/querydsl"
+// def querydslDir = "src/main/generated"
 
 // Querydsl Q-class 추가 코드 시작
 querydsl {

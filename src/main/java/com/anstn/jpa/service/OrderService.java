@@ -1,10 +1,16 @@
 package com.anstn.jpa.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.anstn.jpa.domain.delivery.Delivery;
+import com.anstn.jpa.domain.item.Item;
+import com.anstn.jpa.domain.member.Member;
 import com.anstn.jpa.domain.member.MemberRepository;
 import com.anstn.jpa.domain.order.Order;
 import com.anstn.jpa.domain.order.OrderRepository;
+import com.anstn.jpa.domain.orderitem.OrderItem;
+import com.anstn.jpa.web.dto.order.OrderSearchDTO;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +34,7 @@ public class OrderService {
     Optional<Item> item = itemService.findOne(itemId);
 
     //배송정보 생성 
-    Delivery delivery = new Delivery(member.get().getAddress())
+    Delivery delivery = new Delivery(member.get().getAddress());
     //주문상품생성 
     OrderItem orderItem = OrderItem.createOrderItem(item.get(), item.get().getPrice(), count);
     //주문 생성 
@@ -47,7 +53,8 @@ public class OrderService {
   }
 
   //주문검색 
-  public List<Order> findOrders(OrderSearch orderSearch) {
+  public List<Order> findOrders(OrderSearchDTO orderSearch) {
     return orderRepository.findAll(orderSearch);
   }
+  
 }
