@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,6 +12,9 @@ import javax.persistence.Table;
 
 import com.anstn.jpa.domain.item.Item;
 import com.anstn.jpa.domain.order.Order;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,11 +23,12 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name = "ORDER_ITEM")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class OrderItem {
   
-  @Id @GeneratedValue
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ORDER_ITEM_ID")
-  private Long id; 
+  private Long id;  
   
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "ITEM_ID")

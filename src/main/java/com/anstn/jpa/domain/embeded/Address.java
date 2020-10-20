@@ -2,6 +2,7 @@ package com.anstn.jpa.domain.embeded;
 
 import javax.persistence.Embeddable;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -10,6 +10,8 @@ import com.anstn.jpa.domain.member.MemberRepository;
 import com.anstn.jpa.domain.order.Order;
 import com.anstn.jpa.domain.order.OrderRepository;
 import com.anstn.jpa.domain.orderitem.OrderItem;
+import com.anstn.jpa.exception.ExistsMemberException;
+import com.anstn.jpa.exception.NoExistsItemException;
 import com.anstn.jpa.web.dto.order.OrderSearchDTO;
 
 import org.springframework.stereotype.Service;
@@ -30,15 +32,15 @@ public class OrderService {
   public Long order(Long memberId, Long itemId, int count) {
     
     //엔티티조회 
-    Optional<Member> member = memberRepository.findById(memberId); 
-    Optional<Item> item = itemService.findOne(itemId);
-
+    Member member = memberRepository.findById(memberId).orElseThrow(() -> new ExistsMemberException("해당회원없음"));
+    Item item = itemService.findOne(itemId).orElseThrow(() -> new NoExistsItemException("해당 아이템 없음")); 
+    
     //배송정보 생성 
-    Delivery delivery = new Delivery(member.get().getAddress());
+    Delivery delivery = new Delivery(member.getAddress());
     //주문상품생성 
-    OrderItem orderItem = OrderItem.createOrderItem(item.get(), item.get().getPrice(), count);
+    OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
     //주문 생성 
-    Order order = Order.createOrder(member.get(), delivery, orderItem);
+    Order order = Order.createOrder(member, delivery, orderItem);
     //주문저장 
     orderRepository.save(order); 
     return order.getId();

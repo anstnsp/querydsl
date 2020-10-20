@@ -19,23 +19,25 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
   
   @Override
   public List<Order> findAll(OrderSearchDTO orderSearchDTO) {
-    queryFactory.selectFrom(order)
-        .join(member)
-        .where(
-          member.name.contains(orderSearchDTO.getMemberName()),
-          eqSearchOrder(orderSearchDTO.getOrderStatus())
-        )
-        .fetch();
+    return queryFactory.selectFrom(order)
+                      // .join(member)
+                      .leftJoin(order.member, member)
+                      .fetchJoin()
+                      .where(
+                        // member.name.like("%"+ orderSearchDTO.getMemberName()+ "%"),  //contains(orderSearchDTO.getMemberName()),
+                        member.name.contains(orderSearchDTO.getMemberName()),
+                        // member.name.like(orderSearchDTO.getMemberName()),
+                        eqSearchOrder(orderSearchDTO.getOrderStatus())
+                      )
+                      .fetch();
 
-                
-    return null;
   }
 
   private BooleanExpression eqSearchOrder(OrderStatus orderStatus) {
     if (StringUtils.isEmpty(orderStatus)) return null; 
     return order.status.eq(orderStatus);
   }
-
+ 
   private BooleanExpression eqMemberName(String memberName) {
     if (StringUtils.isEmpty(memberName)) return null; 
     return member.name.eq(memberName);

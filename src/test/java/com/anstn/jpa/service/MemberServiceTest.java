@@ -32,7 +32,9 @@ public class MemberServiceTest {
     //when 
     Long saveId = memberService.join(member); 
     //then 
+    System.out.println(memberRepository.findByName("문수").get(0).getName());
     assertEquals(member, memberRepository.findById(saveId).get());
+    assertEquals("문수", memberRepository.findByName("문수").get(0).getName()); 
   }
 
   @Test

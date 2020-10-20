@@ -11,6 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,6 +23,10 @@ import com.anstn.jpa.domain.delivery.Delivery;
 import com.anstn.jpa.domain.delivery.DeliveryStatus;
 import com.anstn.jpa.domain.member.Member;
 import com.anstn.jpa.domain.orderitem.OrderItem;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,9 +35,10 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "ORDERS")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Order {
   
-  @Id @GeneratedValue
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ORDER_ID")
   private Long id; 
   
@@ -40,10 +46,10 @@ public class Order {
   @JoinColumn(name = "MEMBER_ID")
   private Member member; 
   
-  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) 
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY) 
   private List<OrderItem> orderItems = new ArrayList<OrderItem>(); 
   
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) 
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "DELIVERY_ID")
   private Delivery delivery; //배송정보
 

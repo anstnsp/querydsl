@@ -11,7 +11,9 @@ import javax.persistence.OneToOne;
 
 import com.anstn.jpa.domain.embeded.Address;
 import com.anstn.jpa.domain.order.Order;
-
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,11 +21,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Delivery {
 
   public Delivery(Address address) {
     this.address = address; 
   }
+  public Delivery(){}
+  // public Delivery(Address address2) {
+	// }
 
   @Id @GeneratedValue
   @Column(name ="DELEVERY_ID") 
