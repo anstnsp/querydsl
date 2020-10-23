@@ -32,5 +32,10 @@ public class MemberService {
   public Optional<Member> findOne(Long memberId) {
     return memberRepository.findById(memberId);
   }
+  
+  //회원삭제 
+  public void deleteMember(Long memberId) {
+   memberRepository.deleteById(memberId); 
+  }
 
 }

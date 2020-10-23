@@ -25,11 +25,11 @@ public class CategoryItem {
   @Column(name = "CATEGORY_ITEM_ID")
   private Long id; 
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name ="CATEGORY_ID")
   private Category category; 
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "ITEM_ID") 
   private Item item; 
 

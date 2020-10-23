@@ -42,14 +42,14 @@ public class Order {
   @Column(name = "ORDER_ID")
   private Long id; 
   
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "MEMBER_ID")
   private Member member; 
   
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY) 
   private List<OrderItem> orderItems = new ArrayList<OrderItem>(); 
   
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "DELIVERY_ID")
   private Delivery delivery; //배송정보
 

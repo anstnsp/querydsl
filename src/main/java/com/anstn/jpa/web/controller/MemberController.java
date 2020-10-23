@@ -7,6 +7,7 @@ import com.anstn.jpa.domain.member.Member;
 import com.anstn.jpa.exception.ExistsMemberException;
 import com.anstn.jpa.service.MemberService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,5 +42,11 @@ public class MemberController {
     return memberService.findMembers();
   }
 
+  //멤버삭제 
+  @DeleteMapping("/member/{memberId}")
+  public String deleteMember(@PathVariable("memberId") Long memberId) {
+    memberService.deleteMember(memberId);
+    return "success";
+  }
   
 }

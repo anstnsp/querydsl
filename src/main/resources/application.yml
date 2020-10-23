@@ -1,8 +1,8 @@
 
 spring:
-  jackson:
-    serialization:
-      fail-on-empty-beans: false
+  # jackson:
+  #   serialization:
+  #     fail-on-empty-beans: false
   profiles:
     active : local # local(로컬), dev(개발) , prod(운영)  
   #Process Id 파일위치 설정 
